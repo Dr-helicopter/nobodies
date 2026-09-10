@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://c22fhd42j6m67"]
+
+[ext_resource type="Texture2D" uid="uid://cl0igc6r2qar4" path="res://icon.svg" id="1_2qewn"]
+[ext_resource type="Script" uid="uid://mu5buf2rcgqv" path="res://scripts/slot.gd" id="1_ic0fu"]
+
+[node name="Slot" type="Node2D" unique_id=308988777 node_paths=PackedStringArray("label")]
+script = ExtResource("1_ic0fu")
+label = NodePath("Label")
+
+[node name="Icon" type="Sprite2D" parent="." unique_id=341930416]
+modulate = Color(7.133, 7.133, 7.133, 1)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("1_2qewn")
+
+[node name="Label" type="Label" parent="." unique_id=1557550146]
+offset_right = 40.0
+offset_bottom = 23.0

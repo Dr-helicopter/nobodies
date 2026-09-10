@@ -1,0 +1,95 @@
+[gd_scene format=3 uid="uid://b75yrt7e8ghvu"]
+
+[ext_resource type="Script" path="res://scripts/game_secne.gd" id="1_k2fxd"]
+[ext_resource type="PackedScene" uid="uid://c22fhd42j6m67" path="res://scenes/slot.tscn" id="2_geyg1"]
+[ext_resource type="PackedScene" uid="uid://dp6s4aymxxsmq" path="res://scenes/shape.tscn" id="3_lbkmf"]
+
+[sub_resource type="Animation" id="Animation_lbkmf"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("UI/ColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.47843137, 0.47843137, 0.47843137, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_1q7er"]
+resource_name = "blink_in"
+length = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("UI/ColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.075, 0.24166666),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0.4788676, 0.4788676, 0.4788676, 1), Color(0.4788676, 0.4788676, 0.4788676, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_geyg1"]
+resource_name = "blink_out"
+length = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("UI/ColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.13333334, 0.33333334, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(0.4788676, 0.4788676, 0.4788676, 0), Color(0.4788676, 0.4788676, 0.4788676, 1), Color(0.4788676, 0.4788676, 0.4788676, 1), Color(0.4788676, 0.4788676, 0.4788676, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_lbkmf"]
+_data = {
+&"RESET": SubResource("Animation_lbkmf"),
+&"blink_in": SubResource("Animation_1q7er"),
+&"blink_out": SubResource("Animation_geyg1")
+}
+
+[node name="GameSecne" type="Node2D" unique_id=949406441 node_paths=PackedStringArray("time_bar")]
+position = Vector2(0, 5)
+script = ExtResource("1_k2fxd")
+time = 5.0
+slot_scene = ExtResource("2_geyg1")
+shape_scene = ExtResource("3_lbkmf")
+time_bar = NodePath("UI/ProgressBar")
+
+[node name="UI" type="CanvasLayer" parent="." unique_id=1117116412]
+unique_name_in_owner = true
+
+[node name="ProgressBar" type="ProgressBar" parent="UI" unique_id=113110646]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -62.0
+grow_horizontal = 2
+grow_vertical = 0
+show_percentage = false
+
+[node name="ColorRect" type="ColorRect" parent="UI" unique_id=538850950]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.47843137, 0.47843137, 0.47843137, 0)
+
+[node name="Timer" type="Timer" parent="." unique_id=1615217643]
+one_shot = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1805041549]
+libraries/ = SubResource("AnimationLibrary_lbkmf")
