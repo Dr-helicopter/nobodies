@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://b75yrt7e8ghvu"]
 
-[ext_resource type="Script" path="res://scripts/game_secne.gd" id="1_k2fxd"]
+[ext_resource type="Script" uid="uid://bietxc44dgcdf" path="res://scripts/game_secne.gd" id="1_k2fxd"]
 [ext_resource type="PackedScene" uid="uid://c22fhd42j6m67" path="res://scenes/slot.tscn" id="2_geyg1"]
 [ext_resource type="PackedScene" uid="uid://dp6s4aymxxsmq" path="res://scenes/shape.tscn" id="3_lbkmf"]
 
@@ -58,12 +58,13 @@ _data = {
 &"blink_out": SubResource("Animation_geyg1")
 }
 
-[node name="GameSecne" type="Node2D" unique_id=949406441 node_paths=PackedStringArray("time_bar")]
+[node name="GameSecne" type="Node2D" unique_id=949406441 node_paths=PackedStringArray("color_rect", "time_bar")]
 position = Vector2(0, 5)
 script = ExtResource("1_k2fxd")
 time = 5.0
 slot_scene = ExtResource("2_geyg1")
 shape_scene = ExtResource("3_lbkmf")
+color_rect = NodePath("UI/ColorRect")
 time_bar = NodePath("UI/ProgressBar")
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=1117116412]
@@ -85,7 +86,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
 color = Color(0.47843137, 0.47843137, 0.47843137, 0)
 
 [node name="Timer" type="Timer" parent="." unique_id=1615217643]

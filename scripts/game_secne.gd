@@ -19,6 +19,7 @@ var new_shape: Shape
 
 
 
+@export var color_rect: ColorRect
 @onready var timer : Timer = $'Timer'
 @onready var anim : AnimationPlayer = $'AnimationPlayer'
 @export var time_bar : ProgressBar
@@ -46,7 +47,8 @@ func _process(_delta: float) -> void:
 	time_bar.value = time_bar.max_value * timer.time_left / time 
 
 
-func procede() :
+func procede():
+	color_rect.mouse_filter = Control.MOUSE_FILTER_STOP
 	anim.play('blink_out')
 	await anim.animation_finished
 	
@@ -62,14 +64,19 @@ func procede() :
 		positions[i].reset_border_color()
 
 	anim.play('blink_in')
+	color_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
+
+func lose():
+	color_rect.mouse_filter = Control.MOUSE_FILTER_STOP
 
 func _on_timeout(): 
-	if !showing: return
-
-	showing = false
-	add_new_shape()
-	procede()
+	if !showing: 
+		lose()
+	else:
+		showing = false
+		add_new_shape()
+		procede()
 	
 	
 
@@ -94,13 +101,15 @@ func _on_clicked(shape: Shape):
 		await get_tree().create_timer(0.5).timeout
 		add_new_shape()
 		procede()
-
-
 	else:
 		shape.set_border_color(Color.RED)
 		timer.stop()
+		lose()
 
-
+func _unhandled_key_input(event: InputEvent) -> void:
+	if event is InputEventKey:
+		if event.keycode == KEY_R and not event.echo and event.pressed:
+			get_tree().reload_current_scene()
 
 func shuffle(elements: Array, gsize: int): ## shufles, Duh!
 	var res := {}
@@ -122,3 +131,4 @@ func fill_grid(gsize: int): # makes the slots
 		slots[i] = new_slot
 		new_slot.set_label(str(i))
 		add_child(new_slot)
+
