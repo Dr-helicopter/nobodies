@@ -2,7 +2,8 @@
 
 [ext_resource type="Script" uid="uid://bietxc44dgcdf" path="res://scripts/game_secne.gd" id="1_k2fxd"]
 [ext_resource type="PackedScene" uid="uid://c22fhd42j6m67" path="res://scenes/slot.tscn" id="2_geyg1"]
-[ext_resource type="PackedScene" uid="uid://dp6s4aymxxsmq" path="res://scenes/shape.tscn" id="3_lbkmf"]
+[ext_resource type="PackedScene" uid="uid://dp6s4aymxxsmq" path="res://scenes/character.tscn" id="3_1q7er"]
+[ext_resource type="Resource" uid="uid://1ptfjr8yywi1" path="res://assets/character_data.tres" id="4_1q7er"]
 
 [sub_resource type="Animation" id="Animation_lbkmf"]
 length = 0.001
@@ -63,7 +64,8 @@ position = Vector2(0, 5)
 script = ExtResource("1_k2fxd")
 time = 5.0
 slot_scene = ExtResource("2_geyg1")
-shape_scene = ExtResource("3_lbkmf")
+character_scene = ExtResource("3_1q7er")
+character_data = ExtResource("4_1q7er")
 color_rect = NodePath("UI/ColorRect")
 time_bar = NodePath("UI/ProgressBar")
 
