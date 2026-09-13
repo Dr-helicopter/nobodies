@@ -16,6 +16,7 @@ signal win
 
 @export_group('Node Referances')
 @export var color_rect	: ColorRect
+@export var play_ground	: ColorRect
 @export var timer 		: Timer
 @export var anim 		: AnimationPlayer
 @export var time_bar 	: ProgressBar
@@ -31,9 +32,10 @@ signal win
 @export var valid_grids	: Array[Vector2i]
 
 var level := 1
-var size : Vector2
-var cel_size : Vector2
-var slots : Dictionary[int, Node2D] = {}
+var size 			: Vector2
+var current_grid	: Vector2i
+var cel_size 		: Vector2
+var slots 			: Dictionary[int, Node2D] = {}
 var avalable_characters := []
 var picked_characters := []
 var positions : Dictionary = {}
@@ -43,22 +45,33 @@ var new_character: Character
 
 
 func _ready() -> void:
-	# safe gards
+	# safe gards:
 	if last_level > max_gid_cels - starting_characters:
 		printerr("your last level is out of bounds")
 		get_tree().quit()
 	if last_level < 1:
 		printerr("your last level is less then 1 you stupid fuck")
 		get_tree().quit()
+	var grid_sizes : Array[int] = []
+	for i in valid_grids:
+		grid_sizes.append(i.x * i.y)
+	var min_cels = grid_sizes.min()
+	if min_cels < max_gid_cels:
+		printerr("you have more cels then you can show")
+		get_tree().quit()
 
+
+	# the actual function:
 	win.connect(_on_win)
 
 
-	size = get_viewport_rect().size
-	cel_size = Vector2(abs(size.x/7), abs(size.y/5)) 
+	# grid initialazation
+	play_ground.resized.connect(size_the_grid)
+	fill_grid(max_gid_cels)
+	size_the_grid()
+
 	avalable_characters = character_data.characters.keys()
 
-	fill_grid(max_gid_cels)
 	
 	for i in starting_characters:
 		add_new_character()
@@ -139,6 +152,20 @@ func add_new_character() -> Character:
 	
 
 
+func closest_aspect(window: Vector2, ratios: Array) -> Vector2:
+	## what an ugly ass function
+	var target := window.x / window.y
+	var closest : Vector2i = ratios[0]
+	var closest_diff : float = abs(target - float(closest.x)/float(closest.y))
+
+	for r in ratios:
+		var ratio : float= float(r.x) / float(r.y)
+		var diff : float = abs(target - ratio)
+
+		if diff < closest_diff:
+			closest_diff = diff
+			closest = r
+	return closest
 
 func is_correct_shape(character: Character): # self explanatory
 	return character == new_character
@@ -164,7 +191,17 @@ func _on_win():
 	win_panel.show()
 	color_rect.mouse_filter = Control.MOUSE_FILTER_STOP
 	
-	
+func size_the_grid():
+	size = play_ground.size
+	current_grid = closest_aspect(size, valid_grids)
+	print(current_grid, size) 
+	print('  ')
+	cel_size = Vector2(abs(size.x/current_grid.x), abs(size.y/current_grid.y)) 
+	for i in max_gid_cels:
+		slots[i].position = Vector2(
+			(i % current_grid.x) * cel_size.x,
+			(i / current_grid.x) * cel_size.y
+		)
 
 func _unhandled_key_input(event: InputEvent) -> void:
 	if event is InputEventKey:
@@ -188,10 +225,6 @@ func shuffle(elements: Array, lsize: int) -> Dictionary:
 func fill_grid(gsize: int): ## isntantiates the slots
 	for i in gsize:
 		var new_slot : Node2D = slot_scene.instantiate()
-		new_slot.position = Vector2(
-			(i % 7) * cel_size.x,
-			(i / 7) * cel_size.y
-			)
 		slots[i] = new_slot
 		new_slot.set_label(str(i))
 		add_child(new_slot)
