@@ -59,27 +59,58 @@ _data = {
 &"blink_out": SubResource("Animation_geyg1")
 }
 
-[node name="GameSecne" type="Node2D" unique_id=949406441 node_paths=PackedStringArray("color_rect", "time_bar")]
-position = Vector2(0, 5)
+[node name="GameSecne" type="Node2D" unique_id=949406441 node_paths=PackedStringArray("color_rect", "timer", "anim", "time_bar", "win_panel", "win_label", "replay_button")]
 script = ExtResource("1_k2fxd")
 time = 5.0
+last_level = 2
 slot_scene = ExtResource("2_geyg1")
 character_scene = ExtResource("3_1q7er")
 character_data = ExtResource("4_1q7er")
 color_rect = NodePath("UI/ColorRect")
-time_bar = NodePath("UI/ProgressBar")
+timer = NodePath("Timer")
+anim = NodePath("AnimationPlayer")
+time_bar = NodePath("UI/VBoxContainer/TimeBar")
+win_panel = NodePath("UI/Panel")
+win_label = NodePath("UI/Panel/VBoxContainer/WinLabel")
+replay_button = NodePath("UI/Panel/VBoxContainer/Button")
+max_gid_cels = 13
+min_ratio = Vector2i(1, 2)
+max_ratio = Vector2i(2, 1)
+valid_grids = Array[Vector2i]([Vector2i(7, 5), Vector2i(6, 6), Vector2i(7, 5)])
+
+[node name="BG" type="CanvasLayer" parent="." unique_id=307370177]
+layer = -1
+
+[node name="Playground2" type="ColorRect" parent="BG" unique_id=1622335633]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+color = Color(0.3752987, 0.43229166, 0.4036629, 1)
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=1117116412]
 unique_name_in_owner = true
 
-[node name="ProgressBar" type="ProgressBar" parent="UI" unique_id=113110646]
-anchors_preset = 12
-anchor_top = 1.0
+[node name="VBoxContainer" type="VBoxContainer" parent="UI" unique_id=1288137027]
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -62.0
 grow_horizontal = 2
-grow_vertical = 0
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Playground" type="ColorRect" parent="UI/VBoxContainer" unique_id=845840234]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+color = Color(0, 0.078431375, 0.0627451, 0)
+
+[node name="TimeBar" type="ProgressBar" parent="UI/VBoxContainer" unique_id=2037462585]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.07
 show_percentage = false
 
 [node name="ColorRect" type="ColorRect" parent="UI" unique_id=538850950]
@@ -89,6 +120,48 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.47843137, 0.47843137, 0.47843137, 0)
+
+[node name="Panel" type="Panel" parent="UI" unique_id=362713346]
+visible = false
+modulate = Color(0.29233348, 0.60257185, 0.6833996, 1)
+anchors_preset = -1
+anchor_left = 0.2
+anchor_top = 0.3
+anchor_right = 0.8
+anchor_bottom = 0.7
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/Panel" unique_id=554774159]
+layout_mode = 1
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="WinLabel" type="Label" parent="UI/Panel/VBoxContainer" unique_id=1162858504]
+layout_mode = 2
+text = "you finished the game. im proud of you
+your time: 3 
+your score: 30"
+horizontal_alignment = 1
+
+[node name="Button" type="Button" parent="UI/Panel/VBoxContainer" unique_id=1439301249]
+layout_mode = 2
+text = "play agian
+"
+
+[node name="Label" type="Label" parent="UI/Panel/VBoxContainer" unique_id=1803692055]
+layout_mode = 2
+text = "or go do something else"
+horizontal_alignment = 1
 
 [node name="Timer" type="Timer" parent="." unique_id=1615217643]
 one_shot = true
