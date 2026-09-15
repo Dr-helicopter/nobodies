@@ -2,7 +2,7 @@
 
 A tiny memory and reaction-time game made in Godot.
 
-image::characters.gif[Characters]
+image::characters.gif[Characters, 512,512]
 
 == About
 
