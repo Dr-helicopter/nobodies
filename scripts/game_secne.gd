@@ -213,7 +213,8 @@ func _on_lose():
 	color_rect.mouse_filter = Control.MOUSE_FILTER_STOP
 	new_character.set_border_color(Color.GREEN)
 
-	replay_button.pressed.connect(func (): get_tree().reload_current_scene())
+	lose_replay_button.pressed.connect(func (): 
+		get_tree().reload_current_scene())
 	var play_time := (Time.get_ticks_msec() - start_time) / 1000.0
 	lose_label.text = '\nyour score: ' + str(level) + '\n' +\
 			'your time: '  + format_time(int(play_time))

@@ -224,7 +224,7 @@ lose_char_sprite = NodePath("UI/lose_panel/VBoxContainer/Aspect/Panel/Sprite2D")
 max_gid_cels = 35
 min_ratio = Vector2i(1, 2)
 max_ratio = Vector2i(2, 1)
-valid_grids = Array[Vector2i]([Vector2i(7, 5), Vector2i(6, 6), Vector2i(5, 7)])
+valid_grids = Array[Vector2i]([Vector2i(7, 5), Vector2i(6, 6), Vector2i(5, 7), Vector2i(4, 9)])
 
 [node name="BG" type="CanvasLayer" parent="." unique_id=307370177]
 layer = -1
