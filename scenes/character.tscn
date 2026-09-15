@@ -8,7 +8,7 @@
 script = ExtResource("1_rkhd4")
 
 [node name="border" type="Sprite2D" parent="." unique_id=20745382]
-modulate = Color(1, 0, 1, 0)
+modulate = Color(1, 1, 1, 0)
 self_modulate = Color(9.539337, 9.539337, 9.539337, 1)
 position = Vector2(71, 70)
 scale = Vector2(1.1, 1.1)
@@ -20,7 +20,7 @@ offset_right = 125.0
 offset_bottom = 125.0
 
 [node name="Icon" type="Sprite2D" parent="." unique_id=648534713]
-position = Vector2(74, 86)
+position = Vector2(81, 95)
 scale = Vector2(3, 3)
 texture = ExtResource("3_lrhn5")
 hframes = 8

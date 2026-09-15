@@ -2,6 +2,7 @@ extends Node2D
 
 
 signal win
+signal lose
 
 @export_group('Gameplay')
 @export var time : float
@@ -22,7 +23,11 @@ signal win
 @export var time_bar 	: ProgressBar
 @export var win_panel	: Panel
 @export var win_label	: Label
-@export var replay_button:Button
+@export var lose_label	: Label
+@export var lose_name_label		: Label
+@export var replay_button		: Button
+@export var lose_replay_button	: Button
+@export var lose_char_sprite	: Sprite2D
 
 
 @export_group('Grid')
@@ -32,6 +37,7 @@ signal win
 @export var valid_grids	: Array[Vector2i]
 
 var level := 1
+var start_time : int ## it should hold the game tick of when we start playing
 var size 			: Vector2
 var current_grid	: Vector2i
 var cel_size 		: Vector2
@@ -46,7 +52,7 @@ var new_character: Character
 
 func _ready() -> void:
 	# safe gards:
-	if last_level > max_gid_cels - starting_characters:
+	if last_level > (max_gid_cels - starting_characters):
 		printerr("your last level is out of bounds")
 		get_tree().quit()
 	if last_level < 1:
@@ -63,6 +69,7 @@ func _ready() -> void:
 
 	# the actual function:
 	win.connect(_on_win)
+	lose.connect(_on_lose)
 
 
 	# grid initialazation
@@ -82,6 +89,7 @@ func _ready() -> void:
 
 	timer.timeout.connect(_on_timeout)
 	timer.start(time)
+	start_time = Time.get_ticks_msec()
 
 
 
@@ -118,12 +126,10 @@ func procede():
 	color_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 
-func lose():
-	color_rect.mouse_filter = Control.MOUSE_FILTER_STOP
 
 func _on_timeout(): 
 	if !showing: 
-		lose()
+		lose.emit()
 	else:
 		showing = false
 		new_character = add_new_character()
@@ -143,7 +149,8 @@ func add_new_character() -> Character:
 		character_data.texture,
 		character_data.slices.x,
 		character_data.slices.y,
-		new_character_num
+		new_character_num,
+		character_data.characters[new_character_num]
 		)
 
 	picked_characters.append(new_character)
@@ -171,25 +178,52 @@ func is_correct_shape(character: Character): # self explanatory
 	return character == new_character
 	
 
-func _on_clicked(shape: Character): # handdls any button press
-	if is_correct_shape(shape):
-		shape.set_border_color(Color.GREEN)
+func _on_clicked(character: Character): # handdls any button press
+	if is_correct_shape(character):
+		character.set_border_color(Color.GREEN)
 		timer.stop()
 	#	await get_tree().create_timer(0.5).timeout
 		new_character = add_new_character()
 		procede()
 	else:
-		shape.set_border_color(Color.RED)
+		character.set_border_color(Color.RED)
 		timer.stop()
-		lose()
+		lose.emit()
+
+
+
+func format_time(s: int) -> String: ## s is in msec 
+	var minutes := s / 60
+	var seconds := s % 60
+
+	return "%02d:%02d" % [minutes, seconds]
 
 func _on_win():
+	var play_time := (Time.get_ticks_msec() - start_time) / 1000.0
 	win_label.text = "you finished the game! im proud of you.\n\n" +\
-			'your score: 30\n' +\
-			'your time: 69'
+			'your score: ' + str(level) + '\n' +\
+			'your time: '  + format_time(int(play_time))
+
 	replay_button.pressed.connect(func (): get_tree().reload_current_scene())
-	win_panel.show()
 	color_rect.mouse_filter = Control.MOUSE_FILTER_STOP
+	anim.play("show_win_panel")
+
+
+func _on_lose():
+	color_rect.mouse_filter = Control.MOUSE_FILTER_STOP
+	new_character.set_border_color(Color.GREEN)
+
+	replay_button.pressed.connect(func (): get_tree().reload_current_scene())
+	var play_time := (Time.get_ticks_msec() - start_time) / 1000.0
+	lose_label.text = '\nyour score: ' + str(level) + '\n' +\
+			'your time: '  + format_time(int(play_time))
+	lose_name_label.text = new_character.char_name
+	lose_char_sprite.hframes = character_data.slices.x
+	lose_char_sprite.vframes = character_data.slices.y
+	lose_char_sprite.frame = new_character.frame
+	anim.play("show_lose_panel")
+
+
 	
 func size_the_grid():
 	size = play_ground.size
@@ -226,5 +260,4 @@ func fill_grid(gsize: int): ## isntantiates the slots
 	for i in gsize:
 		var new_slot : Node2D = slot_scene.instantiate()
 		slots[i] = new_slot
-		new_slot.set_label(str(i))
 		add_child(new_slot)

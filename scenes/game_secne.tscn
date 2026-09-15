@@ -4,6 +4,19 @@
 [ext_resource type="PackedScene" uid="uid://c22fhd42j6m67" path="res://scenes/slot.tscn" id="2_geyg1"]
 [ext_resource type="PackedScene" uid="uid://dp6s4aymxxsmq" path="res://scenes/character.tscn" id="3_1q7er"]
 [ext_resource type="Resource" uid="uid://1ptfjr8yywi1" path="res://assets/character_data.tres" id="4_1q7er"]
+[ext_resource type="Texture2D" uid="uid://nh1qvfh61s15" path="res://assets/characters.png" id="5_47wst"]
+
+[sub_resource type="GDScript" id="GDScript_u7541"]
+script/source = "extends Panel
+
+
+@onready var panel: Panel = $VBoxContainer/Aspect/Panel
+@onready var sprite_2d: Sprite2D = $VBoxContainer/Aspect/Panel/Sprite2D
+
+func _on_panel_resized() -> void:
+	sprite_2d.position = panel.size/2
+	sprite_2d.scale = panel.size/64 
+"
 
 [sub_resource type="Animation" id="Animation_lbkmf"]
 length = 0.001
@@ -18,6 +31,66 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Color(0.47843137, 0.47843137, 0.47843137, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("UI/WinPannel:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("UI/WinPannel:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.8, 0.8)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("UI/WinPannel:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.29233348, 0.60257185, 0.6833996, 1)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("UI/lose_panel:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("UI/lose_panel:modulate")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_1q7er"]
@@ -52,17 +125,87 @@ tracks/0/keys = {
 "values": [Color(0.4788676, 0.4788676, 0.4788676, 0), Color(0.4788676, 0.4788676, 0.4788676, 1), Color(0.4788676, 0.4788676, 0.4788676, 1), Color(0.4788676, 0.4788676, 0.4788676, 0)]
 }
 
+[sub_resource type="Animation" id="Animation_bmfvi"]
+resource_name = "show_lose_panel"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("UI/lose_panel:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.099842936),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("UI/lose_panel:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.095767714, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_47wst"]
+resource_name = "show_win_panel"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("UI/WinPannel:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("UI/WinPannel:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.1, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0.8, 0.8), Vector2(1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("UI/WinPannel:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.375, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0.29337206, 0.6029493, 0.6836089, 0), Color(0.29233348, 0.60257185, 0.6833996, 1)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_lbkmf"]
 _data = {
 &"RESET": SubResource("Animation_lbkmf"),
 &"blink_in": SubResource("Animation_1q7er"),
-&"blink_out": SubResource("Animation_geyg1")
+&"blink_out": SubResource("Animation_geyg1"),
+&"show_lose_panel": SubResource("Animation_bmfvi"),
+&"show_win_panel": SubResource("Animation_47wst")
 }
 
-[node name="GameSecne" type="Node2D" unique_id=949406441 node_paths=PackedStringArray("color_rect", "play_ground", "timer", "anim", "time_bar", "win_panel", "win_label", "replay_button")]
+[node name="GameSecne" type="Node2D" unique_id=949406441 node_paths=PackedStringArray("color_rect", "play_ground", "timer", "anim", "time_bar", "win_panel", "win_label", "lose_label", "lose_name_label", "replay_button", "lose_replay_button", "lose_char_sprite")]
 script = ExtResource("1_k2fxd")
 time = 5.0
-last_level = 2
+last_level = 10
 slot_scene = ExtResource("2_geyg1")
 character_scene = ExtResource("3_1q7er")
 character_data = ExtResource("4_1q7er")
@@ -71,9 +214,13 @@ play_ground = NodePath("UI/VBoxContainer/Playground")
 timer = NodePath("Timer")
 anim = NodePath("AnimationPlayer")
 time_bar = NodePath("UI/VBoxContainer/TimeBar")
-win_panel = NodePath("UI/Panel")
-win_label = NodePath("UI/Panel/VBoxContainer/WinLabel")
-replay_button = NodePath("UI/Panel/VBoxContainer/Button")
+win_panel = NodePath("UI/WinPannel")
+win_label = NodePath("UI/WinPannel/VBoxContainer/WinLabel")
+lose_label = NodePath("UI/lose_panel/VBoxContainer/LoseLabel")
+lose_name_label = NodePath("UI/lose_panel/VBoxContainer/NameLabel")
+replay_button = NodePath("UI/WinPannel/VBoxContainer/Button")
+lose_replay_button = NodePath("UI/lose_panel/VBoxContainer/Button")
+lose_char_sprite = NodePath("UI/lose_panel/VBoxContainer/Aspect/Panel/Sprite2D")
 max_gid_cels = 35
 min_ratio = Vector2i(1, 2)
 max_ratio = Vector2i(2, 1)
@@ -122,7 +269,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.47843137, 0.47843137, 0.47843137, 0)
 
-[node name="Panel" type="Panel" parent="UI" unique_id=362713346]
+[node name="WinPannel" type="Panel" parent="UI" unique_id=362713346]
 visible = false
 modulate = Color(0.29233348, 0.60257185, 0.6833996, 1)
 anchors_preset = -1
@@ -130,14 +277,25 @@ anchor_left = 0.2
 anchor_top = 0.3
 anchor_right = 0.8
 anchor_bottom = 0.7
-grow_horizontal = 2
-grow_vertical = 2
+offset_bottom = 3.0517578e-05
+scale = Vector2(0.8, 0.8)
 size_flags_horizontal = 4
 size_flags_vertical = 4
 mouse_filter = 2
 metadata/_edit_use_anchors_ = true
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UI/Panel" unique_id=554774159]
+[node name="ColorRect" type="ColorRect" parent="UI/WinPannel" unique_id=144602825]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.05
+anchor_top = 0.05
+anchor_right = 0.95
+anchor_bottom = 0.95
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.59298766, 0.52701676, 0, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/WinPannel" unique_id=554774159]
 layout_mode = 1
 anchors_preset = 13
 anchor_left = 0.5
@@ -147,25 +305,91 @@ grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
 
-[node name="WinLabel" type="Label" parent="UI/Panel/VBoxContainer" unique_id=1162858504]
+[node name="WinLabel" type="Label" parent="UI/WinPannel/VBoxContainer" unique_id=1162858504]
 layout_mode = 2
 text = "you finished the game. im proud of you
 your time: 3 
 your score: 30"
 horizontal_alignment = 1
 
-[node name="Button" type="Button" parent="UI/Panel/VBoxContainer" unique_id=1439301249]
+[node name="Button" type="Button" parent="UI/WinPannel/VBoxContainer" unique_id=1439301249]
 layout_mode = 2
 text = "play agian
 "
 
-[node name="Label" type="Label" parent="UI/Panel/VBoxContainer" unique_id=1803692055]
+[node name="Label" type="Label" parent="UI/WinPannel/VBoxContainer" unique_id=1803692055]
 layout_mode = 2
 text = "or go do something else"
 horizontal_alignment = 1
+
+[node name="lose_panel" type="Panel" parent="UI" unique_id=1508728880]
+visible = false
+modulate = Color(1, 1, 1, 0)
+anchors_preset = -1
+anchor_left = 0.2
+anchor_top = 0.2
+anchor_right = 0.8
+anchor_bottom = 0.75
+offset_bottom = 3.0517578e-05
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 2
+script = SubResource("GDScript_u7541")
+metadata/_edit_use_anchors_ = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/lose_panel" unique_id=802755663]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="UI/lose_panel/VBoxContainer" unique_id=384354310]
+layout_mode = 2
+text = "you lost
+the character was:"
+horizontal_alignment = 1
+
+[node name="Aspect" type="AspectRatioContainer" parent="UI/lose_panel/VBoxContainer" unique_id=1033333478]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Panel" type="Panel" parent="UI/lose_panel/VBoxContainer/Aspect" unique_id=583123325]
+layout_mode = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="UI/lose_panel/VBoxContainer/Aspect/Panel" unique_id=2115969719]
+position = Vector2(64, 65.599976)
+scale = Vector2(1.471, 1.471)
+texture = ExtResource("5_47wst")
+offset = Vector2(2.146, 5.726)
+hframes = 8
+vframes = 8
+
+[node name="NameLabel" type="Label" parent="UI/lose_panel/VBoxContainer" unique_id=92711760]
+layout_mode = 2
+text = "or go do something else"
+horizontal_alignment = 1
+
+[node name="LoseLabel" type="Label" parent="UI/lose_panel/VBoxContainer" unique_id=1650192862]
+layout_mode = 2
+text = "your score:
+your time:"
+horizontal_alignment = 1
+
+[node name="Button" type="Button" parent="UI/lose_panel/VBoxContainer" unique_id=1013699661]
+layout_mode = 2
+text = "play agian
+"
+
+[node name="TextureRect" type="TextureRect" parent="UI/lose_panel/VBoxContainer" unique_id=377497444]
+layout_mode = 2
 
 [node name="Timer" type="Timer" parent="." unique_id=1615217643]
 one_shot = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1805041549]
 libraries/ = SubResource("AnimationLibrary_lbkmf")
+
+[connection signal="resized" from="UI/lose_panel/VBoxContainer/Aspect/Panel" to="UI/lose_panel" method="_on_panel_resized"]
