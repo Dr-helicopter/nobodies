@@ -5,6 +5,8 @@
 [ext_resource type="PackedScene" uid="uid://dp6s4aymxxsmq" path="res://scenes/character.tscn" id="3_1q7er"]
 [ext_resource type="Resource" uid="uid://1ptfjr8yywi1" path="res://assets/character_data.tres" id="4_1q7er"]
 [ext_resource type="Texture2D" uid="uid://nh1qvfh61s15" path="res://assets/characters.png" id="5_47wst"]
+[ext_resource type="Theme" uid="uid://bd3p1c464xjy4" path="res://assets/Landscape.tres" id="5_bmfvi"]
+[ext_resource type="Theme" uid="uid://pq7fxnxvi4uy" path="res://assets/Portrait.tres" id="6_q561d"]
 
 [sub_resource type="GDScript" id="GDScript_u7541"]
 script/source = "extends Panel
@@ -202,19 +204,22 @@ _data = {
 &"show_win_panel": SubResource("Animation_47wst")
 }
 
-[node name="GameSecne" type="Node2D" unique_id=949406441 node_paths=PackedStringArray("color_rect", "play_ground", "timer", "anim", "time_bar", "win_panel", "win_label", "lose_label", "lose_name_label", "replay_button", "lose_replay_button", "lose_char_sprite")]
+[node name="GameSecne" type="Node2D" unique_id=949406441 node_paths=PackedStringArray("color_rect", "play_ground", "timer", "anim", "time_bar", "win_panel", "lose_panel", "win_label", "lose_label", "lose_name_label", "replay_button", "lose_replay_button", "lose_char_sprite")]
 script = ExtResource("1_k2fxd")
 time = 5.0
 last_level = 10
 slot_scene = ExtResource("2_geyg1")
 character_scene = ExtResource("3_1q7er")
 character_data = ExtResource("4_1q7er")
+landsacpe_theme = ExtResource("5_bmfvi")
+portrait_theme = ExtResource("6_q561d")
 color_rect = NodePath("UI/ColorRect")
 play_ground = NodePath("UI/VBoxContainer/Playground")
 timer = NodePath("Timer")
 anim = NodePath("AnimationPlayer")
 time_bar = NodePath("UI/VBoxContainer/TimeBar")
 win_panel = NodePath("UI/WinPannel")
+lose_panel = NodePath("UI/lose_panel")
 win_label = NodePath("UI/WinPannel/VBoxContainer/WinLabel")
 lose_label = NodePath("UI/lose_panel/VBoxContainer/LoseLabel")
 lose_name_label = NodePath("UI/lose_panel/VBoxContainer/NameLabel")
@@ -282,6 +287,7 @@ scale = Vector2(0.8, 0.8)
 size_flags_horizontal = 4
 size_flags_vertical = 4
 mouse_filter = 2
+theme = ExtResource("5_bmfvi")
 metadata/_edit_use_anchors_ = true
 
 [node name="ColorRect" type="ColorRect" parent="UI/WinPannel" unique_id=144602825]
@@ -334,6 +340,7 @@ offset_bottom = 3.0517578e-05
 size_flags_horizontal = 4
 size_flags_vertical = 4
 mouse_filter = 2
+theme = ExtResource("6_q561d")
 script = SubResource("GDScript_u7541")
 metadata/_edit_use_anchors_ = true
 

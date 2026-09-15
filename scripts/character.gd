@@ -24,6 +24,9 @@ func set_character(t: Texture, hframe: int, vframe: int, frame: int,
 	self.frame = frame
 	self.char_name  = new_name
 
+func set_size(s: Vector2):
+	$"Icon".scale = s
+
 func set_border_color(c: Color):
 	$"border".modulate = c
 

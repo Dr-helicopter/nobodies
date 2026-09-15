@@ -13,6 +13,8 @@ signal lose
 @export var slot_scene		: PackedScene
 @export var character_scene	: PackedScene
 @export var character_data	: CharacterData
+@export var landsacpe_theme	: Theme
+@export var portrait_theme	: Theme
 
 
 @export_group('Node Referances')
@@ -22,6 +24,7 @@ signal lose
 @export var anim 		: AnimationPlayer
 @export var time_bar 	: ProgressBar
 @export var win_panel	: Panel
+@export var lose_panel	: Panel
 @export var win_label	: Label
 @export var lose_label	: Label
 @export var lose_name_label		: Label
@@ -43,7 +46,7 @@ var current_grid	: Vector2i
 var cel_size 		: Vector2
 var slots 			: Dictionary[int, Node2D] = {}
 var avalable_characters := []
-var picked_characters := []
+var picked_characters : Array[Character] = []
 var positions : Dictionary = {}
 var showing := true
 var new_character: Character
@@ -229,14 +232,26 @@ func _on_lose():
 func size_the_grid():
 	size = play_ground.size
 	current_grid = closest_aspect(size, valid_grids)
-	print(current_grid, size) 
-	print('  ')
+	if size.x > size.y:
+		win_panel.theme = landsacpe_theme
+		lose_panel.theme = landsacpe_theme
+	else:
+		win_panel.theme = portrait_theme
+		lose_panel.theme = portrait_theme
+
+
 	cel_size = Vector2(abs(size.x/current_grid.x), abs(size.y/current_grid.y)) 
+
+	var icon_size = Vector2.ONE * max(cel_size.y, cel_size.x) / 64
+
 	for i in max_gid_cels:
 		slots[i].position = Vector2(
 			(i % current_grid.x) * cel_size.x,
 			(i / current_grid.x) * cel_size.y
 		)
+	for i in picked_characters:
+		i.set_size(icon_size)
+
 
 func _unhandled_key_input(event: InputEvent) -> void:
 	if event is InputEventKey:
