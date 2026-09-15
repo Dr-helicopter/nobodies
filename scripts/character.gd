@@ -16,11 +16,13 @@ func _on_button_pressed():
 	clicked.emit(self)
 
 func set_character(t: Texture, hframe: int, vframe: int, frame: int,
-		new_name:String):
+		new_name:String, icon_size: Vector2):
 	$"Icon".texture = t
 	$"Icon".hframes = hframe
 	$"Icon".vframes = vframe
 	$"Icon".frame   = frame
+	$"Icon".scale	= icon_size
+
 	self.frame = frame
 	self.char_name  = new_name
 

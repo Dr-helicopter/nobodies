@@ -39,11 +39,13 @@ signal lose
 @export var max_ratio	: Vector2i
 @export var valid_grids	: Array[Vector2i]
 
+
 var level := 1
 var start_time : int ## it should hold the game tick of when we start playing
 var size 			: Vector2
 var current_grid	: Vector2i
 var cel_size 		: Vector2
+var icon_size		: Vector2
 var slots 			: Dictionary[int, Node2D] = {}
 var avalable_characters := []
 var picked_characters : Array[Character] = []
@@ -153,7 +155,8 @@ func add_new_character() -> Character:
 		character_data.slices.x,
 		character_data.slices.y,
 		new_character_num,
-		character_data.characters[new_character_num]
+		character_data.characters[new_character_num],
+		icon_size,
 		)
 
 	picked_characters.append(new_character)
@@ -205,7 +208,7 @@ func _on_win():
 	var play_time := (Time.get_ticks_msec() - start_time) / 1000.0
 	win_label.text = "you finished the game! im proud of you.\n\n" +\
 			'your score: ' + str(level) + '\n' +\
-			'your time: '  + format_time(int(play_time))
+			'your time: ' + format_time(int(play_time)) + '\n'
 
 	replay_button.pressed.connect(func (): get_tree().reload_current_scene())
 	color_rect.mouse_filter = Control.MOUSE_FILTER_STOP
@@ -242,7 +245,7 @@ func size_the_grid():
 
 	cel_size = Vector2(abs(size.x/current_grid.x), abs(size.y/current_grid.y)) 
 
-	var icon_size = Vector2.ONE * max(cel_size.y, cel_size.x) / 64
+	icon_size = Vector2.ONE * max(cel_size.y, cel_size.x) / 64
 
 	for i in max_gid_cels:
 		slots[i].position = Vector2(
